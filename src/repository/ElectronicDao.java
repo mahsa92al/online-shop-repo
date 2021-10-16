@@ -19,19 +19,14 @@ public class ElectronicDao extends BaseDao{
         this.connection = BaseDao.getConnection();
     }
 
-    public Electronic findItem () throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("select * from products");
+    public int findIdByName(String name) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(String.format("select id from products" +
+                "where name = '%s'", name) );
         ResultSet resultSet = statement.executeQuery();
-        Electronic electronic = null;
         while (resultSet.next()){
-            electronic = new Electronic();
-            electronic.setId(resultSet.getInt("id"));
-            electronic.setName(resultSet.getString("name"));
-            electronic.setPrice(resultSet.getInt("price"));
-            electronic.setStock(resultSet.getInt("stock"));
-            electronic.setElectronicTypes(ElectronicTypes.valueOf(resultSet.getString("category")));
+            return resultSet.getInt("id");
         }
-        return electronic;
+        return -1;
     }
 
     public void saveNewItem(int id, int quantity, int totalPrice) throws SQLException {
