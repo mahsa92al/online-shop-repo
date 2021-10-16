@@ -17,7 +17,7 @@ public class ElectronicService {
         electronicDao = new ElectronicDao();
     }
 
-    public void addNewOrder(String ItemName, int quantity) throws Exception {
+    public void addNewOrderToList(String ItemName, int quantity) throws Exception {
         Map<Integer, Integer> item = electronicDao.findItemIdPriceByName(ItemName);
         int itemId = -1; //////////////////?????exception???
         for (Integer key: item.keySet()) {
@@ -27,4 +27,5 @@ public class ElectronicService {
         int totalPrice = price * quantity;
         electronicDao.saveNewItem(itemId, quantity, totalPrice);
     }
+
 }
