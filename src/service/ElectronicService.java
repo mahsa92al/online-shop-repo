@@ -24,6 +24,7 @@ public class ElectronicService {
             itemId = key;
         }
         int price = item.get(itemId);
-        electronicDao.saveNewItem(itemId, quantity, price);
+        int totalPrice = price * quantity;
+        electronicDao.saveNewItem(itemId, quantity, totalPrice);
     }
 }
