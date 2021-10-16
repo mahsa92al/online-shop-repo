@@ -22,20 +22,25 @@ public class ElectronicDao extends BaseDao{
     public Electronic findItem () throws SQLException {
         PreparedStatement statement = connection.prepareStatement("select * from products");
         ResultSet resultSet = statement.executeQuery();
+        Electronic electronic = null;
         while (resultSet.next()){
-            Electronic electronic = new Electronic();
+            electronic = new Electronic();
             electronic.setId(resultSet.getInt("id"));
             electronic.setName(resultSet.getString("name"));
             electronic.setPrice(resultSet.getInt("price"));
             electronic.setStock(resultSet.getInt("stock"));
             electronic.setElectronicTypes(ElectronicTypes.valueOf(resultSet.getString("category")));
         }
+        return electronic;
     }
 
-    public List<Electronic> saveNewItem(int id) throws SQLException {
+    public void saveNewItem(int id, int quantity, int totalPrice) throws SQLException {
         String sqlQuery = "insert into order_details (product_id, quantity, price)" +
                 "values(?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sqlQuery);
-
+        statement.setInt(1, id);
+        statement.setInt(2, quantity);
+        statement.setInt(3, totalPrice);
+        statement.executeUpdate();
     }
 }
