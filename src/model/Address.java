@@ -10,17 +10,22 @@ public class Address {
     private String country;
     private String state;
     private String city;
-    private String additionalInfo;
     private String postalCode;
     private Customer customer;
 
-    public Address(String country, String state, String city, String additionalInfo, String postalCode, Customer customer) {
+    public Address(String country, String state, String city, String postalCode, Customer customer) {
         this.country = country;
         this.state = state;
         this.city = city;
-        this.additionalInfo = additionalInfo;
         this.postalCode = postalCode;
         this.customer = customer;
+    }
+
+    public Address(String country, String state, String city, String postalCode) {
+        this.country = country;
+        this.state = state;
+        this.city = city;
+        this.postalCode = postalCode;
     }
 
     public int getId() {
@@ -55,14 +60,6 @@ public class Address {
         this.city = city;
     }
 
-    public String getAdditionalInfo() {
-        return additionalInfo;
-    }
-
-    public void setAdditionalInfo(String additionalInfo) {
-        this.additionalInfo = additionalInfo;
-    }
-
     public String getPostalCode() {
         return postalCode;
     }
@@ -84,11 +81,11 @@ public class Address {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Address address = (Address) o;
-        return id == address.id && Objects.equals(country, address.country) && Objects.equals(state, address.state) && Objects.equals(city, address.city) && Objects.equals(additionalInfo, address.additionalInfo) && Objects.equals(postalCode, address.postalCode) && Objects.equals(customer, address.customer);
+        return id == address.id && Objects.equals(country, address.country) && Objects.equals(state, address.state) && Objects.equals(city, address.city) && Objects.equals(postalCode, address.postalCode) && Objects.equals(customer, address.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, country, state, city, additionalInfo, postalCode, customer);
+        return Objects.hash(id, country, state, city, postalCode, customer);
     }
 }
