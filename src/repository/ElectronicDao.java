@@ -38,7 +38,7 @@ public class ElectronicDao extends BaseDao{
         return null;
     }
 
-    public void saveNewItemToBag(int id, int quantity, int totalPrice) throws SQLException {
+    public void saveNewItemDetails(int id, int quantity, int totalPrice) throws SQLException {
         String sqlQuery = "insert into order_details (product_id, quantity, price)" +
                 "values(?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sqlQuery);
@@ -48,4 +48,7 @@ public class ElectronicDao extends BaseDao{
         statement.executeUpdate();
     }
 
+    public void deleteItemFromBag(){}
+
+    public List<Electronic> findOrdersByCustomerId(){}
 }
