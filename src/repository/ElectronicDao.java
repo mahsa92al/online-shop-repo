@@ -38,13 +38,13 @@ public class ElectronicDao extends BaseDao{
         return null;
     }
 
-    public void saveNewItemDetails(int id, int quantity, int totalPrice) throws SQLException {
-        String sqlQuery = "insert into order_details (product_id, quantity, price)" +
+    public void saveNewOrder(int productId, int quantity, int totalPrice) throws SQLException {
+        String sqlQuery = "insert into orders (order_id, customer_id, date)" +
                 "values(?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sqlQuery);
-        statement.setInt(1, id);
-        statement.setInt(2, quantity);
-        statement.setInt(3, totalPrice);
+        statement.setInt(1, OrderId);
+        statement.setInt(2, );
+        statement.setInt(3, );
         statement.executeUpdate();
     }
 
