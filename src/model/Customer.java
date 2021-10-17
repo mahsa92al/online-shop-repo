@@ -8,12 +8,14 @@ public class Customer {
     private String name;
     private String email;
     private String password;
+    private String phone;
     private Address address;
 
-    public Customer(String name, String email, String password, Address address) {
+    public Customer(String name, String email, String password, String phone, Address address) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.phone = phone;
         this.address = address;
     }
 
@@ -47,6 +49,14 @@ public class Customer {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public Address getAddress() {
