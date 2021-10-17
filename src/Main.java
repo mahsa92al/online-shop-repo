@@ -18,39 +18,51 @@ public class Main {
 
         System.out.println("***Welcome to online shop***");
         System.out.println("1. Create Account");
+        String choice;
         do{
-            try {
-                String name = getNameFromCustomer();
-                error = false;
-            }catch (Exception e){
-                System.out.println(e.getMessage());
-            }
-        }while (error);
-        do{
-            try {
-                String email = getEmailFromCustomer();
-                error = false;
-            } catch (Exception e) {
-                System.out.println(e.getMessage());;
-            }
-        }while (error);
+            choice = scanner.next();
+        }while (!choice.matches("[1-9]+"));
+        int choiceNumber = Integer.parseInt(choice);
+        switch (choiceNumber){
+            case 1:
+                do{
+                    try {
+                        String name = getNameFromCustomer();
+                        error = false;
+                    }catch (Exception e){
+                        System.out.println(e.getMessage());
+                    }
+                }while (error);
+                do{
+                    try {
+                        String email = getEmailFromCustomer();
+                        error = false;
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());;
+                    }
+                }while (error);
 
-        String password = getPasswordFromCustomer();
-        do{
-            try {
-                String phone = getPhoneFromCustomer();
-                error = false;
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }while (error);
-        do{
-            try {
-                Address address = getAddressFromCustomer();
-            } catch (Exception e) {
-                System.out.println(e.getMessage());;
-            }
-        }while (error);
+                String password = getPasswordFromCustomer();
+                do{
+                    try {
+                        String phone = getPhoneFromCustomer();
+                        error = false;
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
+                }while (error);
+                do{
+                    try {
+                        Address address = getAddressFromCustomer();
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());;
+                    }
+                }while (error);
+                //TODO
+                break;
+            default:
+                System.out.println("Invalid value!");
+        }
 
     }
     private static String getNameFromCustomer() throws Exception {
