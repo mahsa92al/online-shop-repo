@@ -4,6 +4,7 @@ import model.Address;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -16,7 +17,7 @@ public class AddressDao {
         this.connection = BaseDao.getConnection();
     }
 
-    public void saveNewAddress(Address address) throws SQLException {
+    public int saveNewAddress(Address address) throws SQLException {
         String sqlQuery = "insert into address (country, state, city, postal_code)" +
                 "values(?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sqlQuery);
@@ -25,5 +26,8 @@ public class AddressDao {
         statement.setString(3, address.getCity());
         statement.setString(4, address.getPostalCode());
         statement.executeUpdate();
+        ResultSet autoKey = statement.getGeneratedKeys();
+        autoKey.next();
+        return autoKey.getInt(1);
     }
 }
