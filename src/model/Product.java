@@ -12,17 +12,6 @@ public class Product {
     private int stock;
     private ProductCategory category;
 
-    public Product(int id, String name, int price, int stock, ProductCategory category) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.stock = stock;
-        this.category = category;
-    }
-
-    public Product() {
-    }
-
     public int getId() {
         return id;
     }
