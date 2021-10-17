@@ -18,11 +18,11 @@ public class ElectronicService {
         electronicDao = new ElectronicDao();
     }
 
-    public void addNewOrderToList(String ItemName, int quantity) throws Exception {
+    public void addNewOrderToBag(String ItemName, int quantity) throws Exception {
         int counter = 1;
         if(counter <= 5){
             Map<Integer, Integer> item = electronicDao.findItemIdPriceByName(ItemName);
-            int itemId = -1; //////////////////?????exception???
+            int itemId = -1;
             for (Integer key: item.keySet()) {
                 itemId = key;
             }
@@ -33,7 +33,7 @@ public class ElectronicService {
         }else{
             throw new Exception("Your shopping bag is full!\n1. Confirm\n2. remove some items");
         }
-
+        //TODO
     }
 
 }
