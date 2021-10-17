@@ -1,5 +1,7 @@
 package model;
 
+import model.enumeration.ProductCategory;
+
 /**
  * @author Mahsa Alikhani m-58
  */
@@ -8,6 +10,18 @@ public class Product {
     private String name;
     private int price;
     private int stock;
+    private ProductCategory category;
+
+    public Product(int id, String name, int price, int stock, ProductCategory category) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.category = category;
+    }
+
+    public Product() {
+    }
 
     public int getId() {
         return id;
@@ -39,5 +53,13 @@ public class Product {
 
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+    public ProductCategory getCategory() {
+        return category;
+    }
+
+    public void setCategory(ProductCategory category) {
+        this.category = category;
     }
 }
