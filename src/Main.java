@@ -33,7 +33,7 @@ public class Main {
             }
         }while (error);
 
-        getPasswordFromCustomer();
+        String password = getPasswordFromCustomer();
         getPhoneFromCustomer();
         getAddressFromCustomer();
 
@@ -55,7 +55,12 @@ public class Main {
         }
         return email;
     }
-    private static void getPasswordFromCustomer(){}
+
+    private static String getPasswordFromCustomer(){
+        System.out.println("Password:");
+        String password = scanner.next();
+        return password;
+    }
     private static void getPhoneFromCustomer(){}
     private static void getAddressFromCustomer(){}
 
