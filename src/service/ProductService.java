@@ -15,5 +15,8 @@ public class ProductService {
     public ProductService() throws SQLException, ClassNotFoundException {
         this.productDao = new ProductDao();
     }
-
+    public List<Product> getAllProducts() throws SQLException {
+        List<Product> products = productDao.findAllProducts();
+        return products;
+    }
 }
