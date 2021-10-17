@@ -15,7 +15,7 @@ public class CustomerDao extends BaseDao{
     public CustomerDao() throws SQLException, ClassNotFoundException {
         this.connection = BaseDao.getConnection();
     }
-    public void saveNewCustomer(Customer customer) throws SQLException {
+    public void saveNewCustomer(Customer customer, int addressId) throws SQLException {
         String sqlQuery = "insert into customer name, email, password, phone, address_id" +
                 "values(?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sqlQuery);
@@ -23,7 +23,7 @@ public class CustomerDao extends BaseDao{
         statement.setString(2, customer.getEmail());
         statement.setString(3, customer.getPassword());
         statement.setString(4, customer.getPhone());
-        statement.setInt(5, customer.getAddress().getId());
+        statement.setInt(5, addressId);
         statement.executeUpdate();
     }
 }
