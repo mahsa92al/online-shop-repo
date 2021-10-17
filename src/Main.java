@@ -1,6 +1,11 @@
 import model.Address;
+import model.Customer;
+import model.Product;
 import service.CustomerService;
+import service.ProductService;
 
+import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -10,10 +15,13 @@ public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
     private static CustomerService customerService;
+    private static ProductService productService;
+    private static Customer customer;
     private static Address address;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
         customerService = new CustomerService();
+
         boolean error = true;
 
         System.out.println("***Welcome to online shop***");
@@ -25,17 +33,19 @@ public class Main {
         int choiceNumber = Integer.parseInt(choice);
         switch (choiceNumber){
             case 1:
+                String name = null;
                 do{
                     try {
-                        String name = getNameFromCustomer();
+                        name = getNameFromCustomer();
                         error = false;
                     }catch (Exception e){
                         System.out.println(e.getMessage());
                     }
                 }while (error);
+                String email = null;
                 do{
                     try {
-                        String email = getEmailFromCustomer();
+                        email = getEmailFromCustomer();
                         error = false;
                     } catch (Exception e) {
                         System.out.println(e.getMessage());;
@@ -43,28 +53,38 @@ public class Main {
                 }while (error);
 
                 String password = getPasswordFromCustomer();
+                String phone = null;
                 do{
                     try {
-                        String phone = getPhoneFromCustomer();
+                        phone = getPhoneFromCustomer();
                         error = false;
                     } catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
                 }while (error);
+                Address address = null;
                 do{
                     try {
-                        Address address = getAddressFromCustomer();
+                        address = getAddressFromCustomer();
                     } catch (Exception e) {
                         System.out.println(e.getMessage());;
                     }
                 }while (error);
-                //TODO
+                customer = new Customer(name, email, password, phone, address);
+                customerService.addNewCustomer(address, customer);
+                showProducts(productService.getAllProducts());
                 break;
             default:
                 System.out.println("Invalid value!");
         }
 
     }
+    private static void showProducts(List<Product> products){
+        for (Product product : products) {
+            System.out.println(product);
+        }
+    }
+
     private static String getNameFromCustomer() throws Exception {
         System.out.println("Full name: ## like Mahsa Alikhani ##");
         String name = scanner.nextLine();
