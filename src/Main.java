@@ -34,7 +34,15 @@ public class Main {
         }while (error);
 
         String password = getPasswordFromCustomer();
-        getPhoneFromCustomer();
+        do{
+            try {
+                String phone = getPhoneFromCustomer();
+                error = false;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }while (error);
+
         getAddressFromCustomer();
 
     }
@@ -61,7 +69,14 @@ public class Main {
         String password = scanner.next();
         return password;
     }
-    private static void getPhoneFromCustomer(){}
+    private static String getPhoneFromCustomer(){
+        System.out.println("Phone");
+        String phone = scanner.next();
+        if(!phone.matches("^(\\+98|0)?9\\d{9}$")){
+            throw new Exception("You did not enter valid phone number!");
+        }
+        return phone;
+    }
     private static void getAddressFromCustomer(){}
 
 }
