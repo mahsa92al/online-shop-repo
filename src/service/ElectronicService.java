@@ -2,11 +2,9 @@ package service;
 
 import repository.ElectronicDao;
 
+import java.sql.Date;
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Mahsa Alikhani m-58
@@ -18,22 +16,6 @@ public class ElectronicService {
         electronicDao = new ElectronicDao();
     }
 
-    public void addNewOrderToBag(String ItemName, int quantity) throws Exception {
-        int counter = 1;
-        if(counter <= 5){
-            Map<Integer, Integer> item = electronicDao.findItemIdPriceByName(ItemName);
-            int itemId = -1;
-            for (Integer key: item.keySet()) {
-                itemId = key;
-            }
-            int price = item.get(itemId);
-            int totalPrice = price * quantity;
-            electronicDao.saveNewItem(itemId, quantity, totalPrice);
-            counter++;
-        }else{
-            throw new Exception("Your shopping bag is full!\n1. Confirm\n2. remove some items");
-        }
-        //TODO
-    }
+
 
 }
