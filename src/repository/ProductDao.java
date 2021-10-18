@@ -34,19 +34,16 @@ public class ProductDao {
          return products;
      }
 
-    public Map<Integer, Integer> findItemPriceByName(String name) throws Exception {
-        PreparedStatement statement = connection.prepareStatement(String.format("select id, price from products" +
-                "where name = '%s'", name) );
+    public Integer findItemPriceById(int id) throws Exception {
+        PreparedStatement statement = connection.prepareStatement(String.format("select price from products" +
+                "where id = %d", id) );
         ResultSet resultSet = statement.executeQuery();
-        Map<Integer, Integer> map = new HashMap<>();
         while (resultSet.next()){
             if(resultSet == null){
-                throw new Exception("Item not found!");
+                throw new Exception("Item's price is not set!");
             }
-            int itemId = resultSet.getInt("id");
             int price = resultSet.getInt("price");
-            map.put(itemId, price);
-            return map;
+            return price;
         }
         return null;
     }
