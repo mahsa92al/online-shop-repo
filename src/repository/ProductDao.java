@@ -48,7 +48,7 @@ public class ProductDao {
         return null;
     }
 
-    public void saveNewOrder(int productId, int quantity, int totalPrice, Date date) throws SQLException {
+    public void saveNewOrder(int productId, int quantity, int totalPrice, Date date, int customerId) throws SQLException {
         String sqlQuery = "insert into orders (product_id, quantity, total_price, date, customer_id)" +
                 "values(?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sqlQuery);
@@ -56,6 +56,7 @@ public class ProductDao {
         statement.setInt(2, quantity);
         statement.setInt(3, totalPrice);
         statement.setDate(4, date);
+        statement.setInt(5, customerId);
 
         statement.executeUpdate();
     }

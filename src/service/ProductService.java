@@ -22,12 +22,12 @@ public class ProductService {
         return products;
     }
 
-    public void addNewOrderToBag(int itemId, int quantity, Date date) throws Exception {
+    public void addNewOrderToBag(int itemId, int quantity, Date date, int customerId) throws Exception {
         int counter = 1;
         if(counter <= 5){
             int price = productDao.findItemPriceById(itemId);
             int totalPrice = price * quantity;
-            productDao.saveNewOrder(itemId, quantity, totalPrice, date);
+            productDao.saveNewOrder(itemId, quantity, totalPrice, date, customerId);
             counter++;
         }else{
             throw new Exception("Your shopping bag is full!\n1. Confirm\n2. remove some items");

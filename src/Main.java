@@ -4,6 +4,7 @@ import model.Product;
 import service.CustomerService;
 import service.ProductService;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
@@ -71,13 +72,37 @@ public class Main {
                     }
                 }while (error);
                 customer = new Customer(name, email, password, phone, address);
-                customerService.addNewCustomer(address, customer);
+                int customerId = customerService.addNewCustomer(address, customer);
                 showProducts(productService.getAllProducts());
+                try {
+                    addToShoppingBag(customerId);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());;
+                }
                 break;
             default:
                 System.out.println("Invalid value!");
         }
 
+    }
+    private static void addToShoppingBag(int customerId) throws Exception {
+        System.out.println("Enter product ID:");
+        String productId = scanner.next();
+        if(!productId.matches("[1-9]+")){
+            throw new Exception("You did not enter numbers! please enter only numbers.");
+        }
+        System.out.println("Enter quantity:");
+        String quantity = scanner.next();
+        if(!quantity.matches("[1-9]+")){
+            throw new Exception("You did not enter numbers! please enter only numbers.");
+        }
+        System.out.println("Enter date: like 1400-07-25");
+        String date = scanner.next();
+        if(!quantity.matches("[0-9]{4}(-)[0-9]{1,2}(-)[0-9]{1,2}")){
+            throw new Exception("You did not enter valid date."); ///////////////////////////////???
+        }
+        productService.addNewOrderToBag(Integer.parseInt(productId), Integer.parseInt(quantity),
+                java.sql.Date.valueOf(date), customerId);
     }
     private static void showProducts(List<Product> products){
         for (Product product : products) {
