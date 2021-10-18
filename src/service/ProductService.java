@@ -22,15 +22,10 @@ public class ProductService {
         return products;
     }
 
-    public void addNewOrderToBag(String ItemName, int quantity, Date date) throws Exception {
+    public void addNewOrderToBag(int itemId, int quantity, Date date) throws Exception {
         int counter = 1;
         if(counter <= 5){
-            Map<Integer, Integer> item = productDao.findItemPriceByName(ItemName);
-            int itemId = -1;
-            for (Integer key: item.keySet()) {
-                itemId = key;
-            }
-            int price = item.get(itemId);
+            int price = productDao.findItemPriceById(itemId);
             int totalPrice = price * quantity;
             productDao.saveNewOrder(itemId, quantity, totalPrice, date);
             counter++;
