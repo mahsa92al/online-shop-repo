@@ -19,8 +19,9 @@ public class CustomerService {
         addressDao = new AddressDao();
     }
 
-    public void addNewCustomer(Address address, Customer customer) throws SQLException {
+    public int addNewCustomer(Address address, Customer customer) throws SQLException {
     int addressId = addressDao.saveNewAddress(address);
-    customerDao.saveNewCustomer(customer, addressId);
+    int customerId = customerDao.saveNewCustomer(customer, addressId);
+    return customerId;
     }
 }
