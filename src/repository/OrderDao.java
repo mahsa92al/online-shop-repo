@@ -1,6 +1,7 @@
 package repository;
 
 import model.Order;
+import model.enumeration.OrderStatus;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,15 +17,16 @@ public class OrderDao extends BaseDao{
         this.connection = BaseDao.getConnection();
     }
 
-    public void saveNewOrder(int productId, int quantity, int totalPrice, Date date, int customerId) throws SQLException {
-        String sqlQuery = "insert into orders (product_id, quantity, total_price, date, customer_id)" +
-                "values(?, ?, ?, ?, ?)";
+    public void saveNewOrder(int productId, int quantity, int totalPrice, Date date, int customerId, OrderStatus status) throws SQLException {
+        String sqlQuery = "insert into orders (product_id, quantity, total_price, date, customer_id, status)" +
+                "values(?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sqlQuery);
         statement.setInt(1, productId);
         statement.setInt(2, quantity);
         statement.setInt(3, totalPrice);
         statement.setDate(4, date);
         statement.setInt(5, customerId);
+        statement.setString(6, status.name());
 
         statement.executeUpdate();
     }
