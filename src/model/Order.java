@@ -1,5 +1,7 @@
 package model;
 
+import model.enumeration.OrderStatus;
+
 import java.sql.Date;
 
 /**
@@ -12,6 +14,7 @@ public class Order {
     private int totalPrice;
     private Date date;
     private int customerId;
+    private OrderStatus status;
 
     public int getId() {
         return id;
@@ -59,6 +62,14 @@ public class Order {
 
     public void setCustomerId(int customerId) {
         this.customerId = customerId;
+    }
+
+    public OrderStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 
     @Override
