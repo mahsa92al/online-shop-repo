@@ -1,5 +1,6 @@
 import model.Address;
 import model.Customer;
+import model.Order;
 import model.Product;
 import service.CustomerService;
 import service.OrderService;
@@ -88,7 +89,25 @@ public class Main {
                 choiceNumber = Integer.parseInt(choice);
                 switch (choiceNumber){
                     case 1:
-
+                        List<Order> orderList = orderService.getOrderList(customerId);
+                        System.out.println(orderList);
+                        System.out.println("which order do you want to remove from bags?\nEnter order Id:");
+                        String orderId;
+                        do{
+                            orderId = scanner.next();
+                        }while (!orderId.matches("[1-9]+"));
+                        int orderIdNumber = Integer.parseInt(orderId);
+                        boolean remove = false;
+                        try {
+                            remove = orderService.removeOrderFromBag(orderIdNumber);
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                        if(remove){
+                            System.out.println("The order was removed successfully.");
+                        }else {
+                            System.out.println("The order was not removed.");
+                        }
                         break;
                     case 2:
                         //TODO
