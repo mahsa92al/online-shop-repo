@@ -44,11 +44,15 @@ public class OrderService {
         return sumPrice;
     }
 
-    public void confirmOrderByCustomer(int orderId, int quantity) throws SQLException {
-        orderDao.updateOrderStatus(orderId, OrderStatus.CONFIRMED);
-        int stock = productDao.findStockByProductId(orderId);
-        int newStock = stock - quantity;
-        productDao.updateProductStock(orderId, newStock);
+    public void confirmOrdersByCustomer(List<Order> ordersList) throws SQLException {
+        for (Order item: ordersList) {
+            if(item.getStatus() == OrderStatus.NOT_CONFIRMED){
+                orderDao.updateOrderStatus(item.getId(), OrderStatus.CONFIRMED);
+                int stock = productDao.findStockByProductId(item.getId());
+                int newStock = stock - item.getQuantity();
+                productDao.updateProductStock(item.getId(), newStock);
+            }
+        }
     }
 
     public List<Order> getOrderList(int customerId) throws SQLException {
