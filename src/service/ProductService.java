@@ -23,14 +23,21 @@ public class ProductService {
     }
 
     public void addNewOrderToBag(int itemId, int quantity, Date date, int customerId) throws Exception {
-        int counter = 1;
-        if(counter <= 5){
-            int price = productDao.findItemPriceById(itemId);
-            int totalPrice = price * quantity;
-            productDao.saveNewOrder(itemId, quantity, totalPrice, date, customerId);
-            counter++;
+        int stock = productDao.findStockByProductId(itemId);
+        if(stock == 0){
+            throw new Exception("The product stock is zero.");
         }else{
-            throw new Exception("Your shopping bag is full!\n1. Confirm\n2. remove some items");
+            int counter = 1;
+            if(counter <= 5){
+                int price = productDao.findItemPriceById(itemId);
+                int totalPrice = price * quantity;
+                productDao.saveNewOrder(itemId, quantity, totalPrice, date, customerId);
+                int newStock = stock - quantity;
+                productDao.updateProductStock(itemId, newStock);
+                counter++;
+            }else{
+                throw new Exception("Your shopping bag is full!\n1. Confirm\n2. remove some items");
+            }
         }
     }
 }
