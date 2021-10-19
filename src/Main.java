@@ -2,6 +2,7 @@ import model.Address;
 import model.Customer;
 import model.Product;
 import service.CustomerService;
+import service.OrderService;
 import service.ProductService;
 
 import java.sql.Date;
@@ -17,6 +18,7 @@ public class Main {
     private static final Scanner scanner = new Scanner(System.in);
     private static CustomerService customerService;
     private static ProductService productService;
+    private static OrderService orderService;
     private static Customer customer;
     private static Address address;
 
@@ -79,6 +81,29 @@ public class Main {
                 } catch (Exception e) {
                     System.out.println(e.getMessage());;
                 }
+                System.out.println("1. Confirm\n2. remove some items");
+                do{
+                    choice = scanner.next();
+                }while (!choice.matches("[1-9]+"));
+                choiceNumber = Integer.parseInt(choice);
+                switch (choiceNumber){
+                    case 1:
+
+                        break;
+                    case 2:
+                        //TODO
+                        break;
+                }
+
+                break;
+            case 2:
+                //TODO//show list
+                break;
+            case 3:
+                //TODO//show item prices
+                break;
+            case 4:
+                //TODO//exit
                 break;
             default:
                 System.out.println("Invalid value!");
@@ -98,10 +123,10 @@ public class Main {
         }
         System.out.println("Enter date: like 1400-07-25");
         String date = scanner.next();
-        if(!quantity.matches("[0-9]{4}(-)[0-9]{1,2}(-)[0-9]{1,2}")){
+        if(!date.matches("[0-9]{4}(-)[0-9]{1,2}(-)[0-9]{1,2}")){
             throw new Exception("You did not enter valid date."); ///////////////////////////////???
         }
-        productService.addNewOrderToBag(Integer.parseInt(productId), Integer.parseInt(quantity),
+        orderService.addNewOrderToBag(Integer.parseInt(productId), Integer.parseInt(quantity),
                 java.sql.Date.valueOf(date), customerId);
     }
     private static void showProducts(List<Product> products){
