@@ -42,7 +42,12 @@ public class OrderService {
         List<Order> orders =  orderDao.getAllOrders(customerId);
         return orders;
     }
-    public void removeOrderFromBag(int orderId){
-
+    public boolean removeOrderFromBag(int orderId) throws Exception {
+        int row = orderDao.deleteAnOrderByOrderId(orderId);
+        if(row == 0){
+            throw new Exception("No order is removed.");
+        }else{
+            return true;
+        }
     }
 }
