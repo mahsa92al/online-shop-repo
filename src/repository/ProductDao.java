@@ -60,4 +60,16 @@ public class ProductDao {
 
         statement.executeUpdate();
     }
+
+    public int findStockByProductId(int id) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(String.format("select stock from products" +
+                "where id = %d", id));
+        ResultSet resultSet = statement.executeQuery();
+        while(resultSet.next()){
+            int stock = resultSet.getInt("stock");
+            return stock;
+        }
+        return 0;
+    }
+
 }
