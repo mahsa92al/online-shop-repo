@@ -39,6 +39,11 @@ public class OrderService {
         }
     }
 
+    public int sumOfOrderPrices(int customerId) throws SQLException {
+        int sumPrice = orderDao.findTotalOrdersPrice(customerId);
+        return sumPrice;
+    }
+
     public void confirmOrderByCustomer(int orderId, int quantity) throws SQLException {
         orderDao.updateOrderStatus(orderId, OrderStatus.CONFIRMED);
         int stock = productDao.findStockByProductId(orderId);
