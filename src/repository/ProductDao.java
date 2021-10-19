@@ -18,28 +18,29 @@ public class ProductDao {
     public ProductDao() throws SQLException, ClassNotFoundException {
         this.connection = BaseDao.getConnection();
     }
-     public List<Product> findAllProducts() throws SQLException {
+
+    public List<Product> findAllProducts() throws SQLException {
         List<Product> products = new ArrayList<>();
-         Statement statement = connection.createStatement();
-         ResultSet resultSet = statement.executeQuery("select * from products");
-         while (resultSet.next()){
-             Product product = new Product();
-             product.setId(resultSet.getInt("id"));
-             product.setName(resultSet.getString("name"));
-             product.setPrice(resultSet.getInt("price"));
-             product.setStock(resultSet.getInt("stock"));
-             product.setCategory(ProductCategory.valueOf(resultSet.getString("category")));
-             products.add(product);
-         }
-         return products;
-     }
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("select * from products");
+        while (resultSet.next()) {
+            Product product = new Product();
+            product.setId(resultSet.getInt("id"));
+            product.setName(resultSet.getString("name"));
+            product.setPrice(resultSet.getInt("price"));
+            product.setStock(resultSet.getInt("stock"));
+            product.setCategory(ProductCategory.valueOf(resultSet.getString("category")));
+            products.add(product);
+        }
+        return products;
+    }
 
     public Integer findItemPriceById(int id) throws Exception {
         PreparedStatement statement = connection.prepareStatement(String.format("select price from products" +
-                "where id = %d", id) );
+                "where id = %d", id));
         ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()){
-            if(resultSet == null){
+        while (resultSet.next()) {
+            if (resultSet == null) {
                 throw new Exception("Item's price is not set!");
             }
             int price = resultSet.getInt("price");
@@ -65,11 +66,17 @@ public class ProductDao {
         PreparedStatement statement = connection.prepareStatement(String.format("select stock from products" +
                 "where id = %d", id));
         ResultSet resultSet = statement.executeQuery();
-        while(resultSet.next()){
+        while (resultSet.next()) {
             int stock = resultSet.getInt("stock");
             return stock;
         }
         return 0;
     }
 
+    public void updateProductStock(int id, int newStock) throws SQLException {
+        String sqlQuery = "update products set stock = '" + newStock + "'" +
+                "where id = '" + id + "'";
+        PreparedStatement statement = connection.prepareStatement(sqlQuery);
+        statement.executeUpdate();
+    }
 }
