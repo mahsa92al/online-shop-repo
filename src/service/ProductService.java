@@ -21,23 +21,4 @@ public class ProductService {
         List<Product> products = productDao.findAllProducts();
         return products;
     }
-
-    public void addNewOrderToBag(int itemId, int quantity, Date date, int customerId) throws Exception {
-        int stock = productDao.findStockByProductId(itemId);
-        if(stock == 0){
-            throw new Exception("The product stock is zero.");
-        }else{
-            int counter = 1;
-            if(counter <= 5){
-                int price = productDao.findItemPriceById(itemId);
-                int totalPrice = price * quantity;
-                productDao.saveNewOrder(itemId, quantity, totalPrice, date, customerId);
-                int newStock = stock - quantity;
-                productDao.updateProductStock(itemId, newStock);
-                counter++;
-            }else{
-                throw new Exception("Your shopping bag is full!");
-            }
-        }
-    }
 }
