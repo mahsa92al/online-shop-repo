@@ -1,9 +1,10 @@
 package repository;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import model.Order;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Mahsa Alikhani m-58
@@ -26,5 +27,23 @@ public class OrderDao extends BaseDao{
         statement.setInt(5, customerId);
 
         statement.executeUpdate();
+    }
+
+    public List<Order> getAllOrders(int customerId) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(String.format("select * from orders where" +
+                "customer_id = %d", customerId));
+        ResultSet resultSet = statement.executeQuery();
+        List<Order> orders = new ArrayList<>();
+        while (resultSet.next()){
+            Order order = new Order();
+            order.setId(resultSet.getInt("id"));
+            order.setProductId(resultSet.getInt("product_id"));
+            order.setQuantity(resultSet.getInt("quantity"));
+            order.setTotalPrice(resultSet.getInt("total_price"));
+            order.setDate(resultSet.getDate("date"));
+            order.setCustomerId(resultSet.getInt("customer_id"));
+            orders.add(order);
+        }
+        return orders;
     }
 }
