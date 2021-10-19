@@ -36,7 +36,7 @@ public class ProductService {
                 productDao.updateProductStock(itemId, newStock);
                 counter++;
             }else{
-                throw new Exception("Your shopping bag is full!\n1. Confirm\n2. remove some items");
+                throw new Exception("Your shopping bag is full!");
             }
         }
     }
