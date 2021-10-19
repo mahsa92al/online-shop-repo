@@ -37,6 +37,20 @@ public class OrderDao extends BaseDao{
         return row;
     }
 
+    public int findQuantityOrderById(int orderId) throws Exception {
+        PreparedStatement statement = connection.prepareStatement(String.format("select quantity from orders" +
+                "where id = %d", orderId));
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()){
+            int quantity = resultSet.getInt("quantity");
+            if(quantity == 0){
+                throw new Exception("Order quantity is not set!");
+            }
+            return quantity;
+        }
+        return 0;
+    }
+
     public List<Order> getAllOrders(int customerId) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(String.format("select * from orders where" +
                 "customer_id = %d", customerId));
