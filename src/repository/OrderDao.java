@@ -60,6 +60,15 @@ public class OrderDao extends BaseDao{
         return 0;
     }
 
+    public int findTotalOrdersPrice(int customerId) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(String.format("select sum(total_price)" +
+                "as sum_price from  where customer_id = %d", customerId));
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()){
+            int sumPrice = resultSet.getInt("sum_price");
+        }
+    }
+
     public List<Order> getAllOrders(int customerId) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(String.format("select * from orders where" +
                 "customer_id = %d", customerId));
