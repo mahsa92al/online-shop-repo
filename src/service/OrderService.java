@@ -1,10 +1,12 @@
 package service;
 
+import model.Order;
 import repository.OrderDao;
 import repository.ProductDao;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @author Mahsa Alikhani m-58
@@ -35,5 +37,12 @@ public class OrderService {
                 throw new Exception("Your shopping bag is full!");
             }
         }
+    }
+    public List<Order> getOrderList(int customerId) throws SQLException {
+        List<Order> orders =  orderDao.getAllOrders(customerId);
+        return orders;
+    }
+    public void removeOrderFromBag(int orderId){
+
     }
 }
