@@ -48,8 +48,9 @@ public class OrderService {
             throw new Exception("No order is removed.");
         }else{
             int quantity = orderDao.findQuantityOrderById(orderId); //if order id was wrong???////////
-            int newStock = stock - quantity;
-            productDao.updateProductStock(itemId, newStock);
+            int stock = productDao.findStockByProductId(orderId);
+            int newStock = stock + quantity;
+            productDao.updateProductStock(orderId, newStock);
             return true;
         }
     }
