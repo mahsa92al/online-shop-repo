@@ -29,6 +29,14 @@ public class OrderDao extends BaseDao{
         statement.executeUpdate();
     }
 
+    public int deleteAnOrderByOrderId(int orderId) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("delete from orders" +
+                "where id = ?");
+        statement.setInt(1,orderId);
+        int row = statement.executeUpdate();
+        return row;
+    }
+
     public List<Order> getAllOrders(int customerId) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(String.format("select * from orders where" +
                 "customer_id = %d", customerId));
