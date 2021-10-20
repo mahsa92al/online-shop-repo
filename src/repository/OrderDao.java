@@ -100,8 +100,7 @@ public class OrderDao extends BaseDao{
 
     public List<Order> getAllOrders(int customerId) throws SQLException {
         Statement statement = connection.createStatement();
-        String sqlQuery =String.format("select * from orders where" +
-                "customer_id = %d", customerId);
+        String sqlQuery = "select * from orders where customer_id = '"+customerId+"'";
         ResultSet resultSet = statement.executeQuery(sqlQuery);
         List<Order> orders = new ArrayList<>();
         while (resultSet.next()){
@@ -112,6 +111,8 @@ public class OrderDao extends BaseDao{
             order.setTotalPrice(resultSet.getInt("total_price"));
             order.setDate(resultSet.getDate("date"));
             order.setCustomerId(resultSet.getInt("customer_id"));
+            order.setStatus(OrderStatus.valueOf(resultSet.getString("customer_id")));
+            order.setCounter(resultSet.getInt("counter"));
             orders.add(order);
         }
         return orders;
