@@ -71,6 +71,18 @@ public class OrderDao extends BaseDao{
         return sumPrice;
     }
 
+    public int findMaxOrderCounterByCustomerId(int customerId) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("select max(counter)" +
+                "as max_counter from orders where customer_id = '" + customerId + "' " +
+                "and status = '" + OrderStatus.NOT_CONFIRMED + "'");
+        ResultSet resultSet = statement.executeQuery();
+        while (resultSet.next()){
+            int maxCounter = resultSet.getInt("max_counter");
+            return maxCounter;
+        }
+        return 0;
+    }
+
     public List<Order> getAllOrders(int customerId) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(String.format("select * from orders where" +
                 "customer_id = %d", customerId));
