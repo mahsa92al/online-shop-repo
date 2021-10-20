@@ -15,6 +15,7 @@ public class Order {
     private Date date;
     private int customerId;
     private OrderStatus status;
+    private int counter;
 
     public int getId() {
         return id;
@@ -70,6 +71,14 @@ public class Order {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
+    }
+
+    public int getCounter() {
+        return counter;
+    }
+
+    public void setCounter(int counter) {
+        this.counter = counter;
     }
 
     @Override
