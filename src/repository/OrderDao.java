@@ -35,8 +35,8 @@ public class OrderDao extends BaseDao{
     public void updateOrderStatus(int orderId, OrderStatus status) throws SQLException {
         String sqlQuery = "update orders set stock = '" + status.name() + "'" +
                 "where id = '" + orderId + "'";
-        PreparedStatement statement = connection.prepareStatement(sqlQuery);
-        statement.executeUpdate();
+        Statement statement = connection.createStatement();
+        statement.executeUpdate(sqlQuery);
     }
 
     public int deleteAnOrderByOrderId(int orderId) throws SQLException {
