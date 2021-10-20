@@ -39,7 +39,7 @@ public class OrderDao extends BaseDao{
         statement.executeUpdate();
     }
 
-    public int deleteAnOrderByOrderId(int orderId, int customerId) throws SQLException {
+    public int deleteAnOrderByOrderId(int orderId) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("delete from orders" +
                 "where id = ?");
         statement.setInt(1,orderId);
@@ -85,13 +85,19 @@ public class OrderDao extends BaseDao{
     }
 
     public OrderStatus findOrderStatusById(int orderId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(String.format("select status from doders" +
+        PreparedStatement statement = connection.prepareStatement(String.format("select status from orders" +
                 "where id = %d", orderId));
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()){
             return OrderStatus.valueOf(resultSet.getString("status"));
         }
         return null;
+    }
+
+    void updateOrderCounter(int orderId, int newCounter) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("update orders set counter = '"+newCounter+"'" +
+                "where id = '"+orderId+"'");
+        statement.executeUpdate();
     }
 
     public List<Order> getAllOrders(int customerId) throws SQLException {
