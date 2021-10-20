@@ -6,10 +6,8 @@ import service.CustomerService;
 import service.OrderService;
 import service.ProductService;
 
-import java.sql.Date;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @author Mahsa Alikhani m-58
@@ -70,7 +68,14 @@ public class Main {
         } while (choiceNumber != 2);
     }
 
-    private static void removeAnOrderByCustomer() {
+    private static void removeAnOrderByCustomer(int customerId) throws SQLException {
+        List<Order> orderList = orderService.getOrderList(customerId);
+        System.out.println(orderList);
+        Map<Integer, Integer> counterMap = new HashMap<>();
+        for (Order item: orderList) {
+            counterMap.put(item.getId(), item.getCounter());
+        }
+        System.out.println("which order do you want to remove from bags?\nEnter order Id:");
         String orderId;
         do {
             orderId = scanner.next();
@@ -79,6 +84,13 @@ public class Main {
         boolean remove = false;
         try {
             remove = orderService.removeOrderFromBag(orderIdNumber);
+            int deletedOrderCounter = counterMap.get(orderIdNumber);
+            for (Map.Entry<Integer, Integer> entry : counterMap.entrySet()){
+                if(entry.getValue() > deletedOrderCounter){
+                    int newCounter = entry.getValue() - 1;
+                    orderService.decreaseOrderCounter(entry.getKey(), newCounter);
+                }
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -157,7 +169,7 @@ public class Main {
         } catch (Exception e) {
             int choiceNumber;
             do{
-                System.out.println("1. remove some items\n 2. Exit");
+                System.out.println("1. remove an item\n 2. Exit");
                 String choice;
                 do {
                     choice = scanner.next();
@@ -165,10 +177,7 @@ public class Main {
                 choiceNumber = Integer.parseInt(choice);
                 switch (choiceNumber) {
                     case 1:
-                        List<Order> orderList = orderService.getOrderList(customerId);
-                        System.out.println(orderList);
-                        System.out.println("which order do you want to remove from bags?\nEnter order Id:");
-                        removeAnOrderByCustomer();//counter
+                        removeAnOrderByCustomer(customerId);
                         break;
                     case 2:
                         break;
@@ -187,11 +196,11 @@ public class Main {
                     case 1:
                         List<Order> ordersList = orderService.getOrderList(customerId);
                         System.out.println(ordersList);
-                        //TODO//show item prices
-                        orderService.confirmOrderByCustomer(Integer.parseInt(productId), Integer.parseInt(quantity);
+                        System.out.println(orderService.sumOfOrderPrices(customerId));
+                        orderService.confirmOrdersByCustomer(ordersList);
                         break;
                     case 2:
-                        removeAnOrderByCustomer();
+                        removeAnOrderByCustomer(customerId);
                         break;
                     default:
                         System.out.println("Invalid value!");
