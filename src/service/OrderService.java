@@ -61,11 +61,19 @@ public class OrderService {
     }
 
     public boolean removeOrderFromBag(int orderId) throws Exception {
+        if(orderDao.findOrderStatusById(orderId) == OrderStatus.NOT_CONFIRMED){
+
+        }
         int row = orderDao.deleteAnOrderByOrderId(orderId);
         if (row == 0) {
             throw new Exception("No order is removed.");
         } else {
+
             return true;
         }
+    }
+
+    public void decreaseOrderCounter(int orderId, int newCounter) throws SQLException {
+        orderDao.updateOrderCounter(orderId, newCounter);
     }
 }
