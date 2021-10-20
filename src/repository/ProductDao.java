@@ -61,10 +61,19 @@ public class ProductDao {
         return 0;
     }
 
+    public int findProductIdByOrderId(int orderId) throws SQLException {
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("select product_id from orders where id = '"+orderId+"'");
+        while (resultSet.next()){
+            return resultSet.getInt("product_id");
+        }
+        return 0;
+    }
+
     public void updateProductStock(int id, int newStock) throws SQLException {
+        Statement statement = connection.createStatement();
         String sqlQuery = "update products set stock = '" + newStock + "'" +
-                "where id = '" + id + "'";
-        PreparedStatement statement = connection.prepareStatement(sqlQuery);
-        statement.executeUpdate();
+                " where id = '" + id + "'";
+        statement.executeUpdate(sqlQuery);
     }
 }
