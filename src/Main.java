@@ -23,6 +23,8 @@ public class Main {
 
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         customerService = new CustomerService();
+        productService = new ProductService();
+        orderService = new OrderService();
         int choiceNumber;
         do {
             System.out.println("***Welcome to online shop***");
