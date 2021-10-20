@@ -2,10 +2,7 @@ package repository;
 
 import model.Address;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * @author Mahsa Alikhani m-58
@@ -20,7 +17,7 @@ public class AddressDao {
     public int saveNewAddress(Address address) throws SQLException {
         String sqlQuery = "insert into address (country, state, city, postal_code)" +
                 "values(?, ?, ?, ?)";
-        PreparedStatement statement = connection.prepareStatement(sqlQuery);
+        PreparedStatement statement = connection.prepareStatement(sqlQuery, Statement.RETURN_GENERATED_KEYS);
         statement.setString(1, address.getCountry());
         statement.setString(2, address.getState());
         statement.setString(3, address.getCity());
