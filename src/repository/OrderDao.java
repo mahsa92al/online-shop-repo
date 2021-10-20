@@ -94,7 +94,7 @@ public class OrderDao extends BaseDao{
         return null;
     }
 
-    void updateOrderCounter(int orderId, int newCounter) throws SQLException {
+    public void updateOrderCounter(int orderId, int newCounter) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("update orders set counter = '"+newCounter+"'" +
                 "where id = '"+orderId+"'");
         statement.executeUpdate();
