@@ -29,7 +29,9 @@ public class OrderService {
             int stock = productDao.findStockByProductId(itemId);
             if (stock == 0) {
                 throw new Exception("The product stock is zero.");
-            } else {
+            } else if (quantity > stock){
+                throw new Exception("The order stock is " + stock + " please choose order quantity < " +stock);
+            }else {
                 int price = productDao.findItemPriceById(itemId);
                 int totalPrice = price * quantity;
                 orderDao.saveNewOrder(itemId, quantity, totalPrice, date, customerId, OrderStatus.NOT_CONFIRMED, counter);
@@ -47,10 +49,11 @@ public class OrderService {
     public void confirmOrdersByCustomer(List<Order> ordersList) throws SQLException {
         for (Order item : ordersList) {
             if (item.getStatus() == OrderStatus.NOT_CONFIRMED) {
-                orderDao.updateOrderStatus(item.getId(), OrderStatus.CONFIRMED);
-                int stock = productDao.findStockByProductId(item.getId());
+                orderDao.updateOrderStatus(item.getId(), OrderStatus.CONFIRMED.name());
+                int productId = productDao.findProductIdByOrderId(item.getId());
+                int stock = productDao.findStockByProductId(productId);
                 int newStock = stock - item.getQuantity();
-                productDao.updateProductStock(item.getId(), newStock);
+                productDao.updateProductStock(productId, newStock);
             }
         }
     }
