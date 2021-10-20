@@ -37,10 +37,9 @@ public class ProductDao {
     }
 
     public Integer findItemPriceById(int id) throws Exception {
-        PreparedStatement statement = connection.prepareStatement("select price from products" +
-                "where id = ?");
-        statement.setInt(1,id);
-        ResultSet resultSet = statement.executeQuery();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("select price from products" +
+                " where id = '"+id+"'");
         while (resultSet.next()) {
             if (resultSet == null) {
                 throw new Exception("Item's price is not set!");
@@ -52,10 +51,9 @@ public class ProductDao {
     }
 
     public int findStockByProductId(int id) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("select stock from products" +
-                "where id = ?");
-        statement.setInt(1, id);
-        ResultSet resultSet = statement.executeQuery();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("select stock from products" +
+                " where id = '"+id+"'");
         while (resultSet.next()) {
             int stock = resultSet.getInt("stock");
             return stock;

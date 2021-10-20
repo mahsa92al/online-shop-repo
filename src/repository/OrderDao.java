@@ -40,18 +40,14 @@ public class OrderDao extends BaseDao{
     }
 
     public int deleteAnOrderByOrderId(int orderId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("delete from orders" +
-                "where id = ?");
-        statement.setInt(1,orderId);
-        int row = statement.executeUpdate();
+        Statement statement = connection.createStatement();
+        int row = statement.executeUpdate("delete from orders where id = '"+orderId+"'");
         return row;
     }
 
     public int findQuantityOrderById(int orderId) throws Exception {
-        PreparedStatement statement = connection.prepareStatement("select quantity from orders" +
-                "where id = ?");
-        statement.setInt(1, orderId);
-        ResultSet resultSet = statement.executeQuery();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("select quantity from orders where id = '"+orderId+"'");
         while (resultSet.next()){
             int quantity = resultSet.getInt("quantity");
             if(quantity == 0){
@@ -63,10 +59,9 @@ public class OrderDao extends BaseDao{
     }
 
     public int findTotalOrdersPrice(int customerId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("select sum(total_price)" +
-                "as sum_price from  where customer_id = ?");
-        statement.setInt(1, customerId);
-        ResultSet resultSet = statement.executeQuery();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("select sum(total_price) as sum_price from orders" +
+                " where customer_id = '"+customerId+"'");
         int sumPrice = 0;
         while (resultSet.next()){
             sumPrice = resultSet.getInt("sum_price");
@@ -88,10 +83,8 @@ public class OrderDao extends BaseDao{
     }
 
     public OrderStatus findOrderStatusById(int orderId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("select status from orders" +
-                "where id = ?");
-        statement.setInt(1, orderId);
-        ResultSet resultSet = statement.executeQuery();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("select status from orders where id = '"+orderId+"'");
         while (resultSet.next()){
             return OrderStatus.valueOf(resultSet.getString("status"));
         }
