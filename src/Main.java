@@ -119,7 +119,6 @@ public class Main {
                 error = false;
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-                ;
             }
         } while (error);
 
@@ -216,8 +215,10 @@ public class Main {
     }
 
     private static String getNameFromCustomer() throws Exception {
-        System.out.println("Full name: ## like Mahsa Alikhani ##");
+        System.out.println("Full name (like Mahsa Alikhani):");
         String name = scanner.nextLine();
+        scanner.nextLine();
+
         if (!name.matches("^[a-zA-Z\\s]*$")) {
             throw new Exception("You did not enter letters! please enter only letter.");
         }
