@@ -17,7 +17,7 @@ public class CustomerDao extends BaseDao{
         this.connection = BaseDao.getConnection();
     }
     public int saveNewCustomer(Customer customer, int addressId) throws SQLException {
-        String sqlQuery = "insert into customer name, email, password, phone, address_id" +
+        String sqlQuery = "insert into customer (name, email, password, phone, address_id)" +
                 "values(?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sqlQuery);
         statement.setString(1, customer.getName());
