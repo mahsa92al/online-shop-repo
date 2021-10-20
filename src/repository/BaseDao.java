@@ -17,7 +17,7 @@ public class BaseDao {
     public static Connection getConnection() throws ClassNotFoundException, SQLException {
         if(connection == null){
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/online_shop", "root", "5103583");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/taxi","root","5103583");
         }
         return connection;
     }
