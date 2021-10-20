@@ -17,9 +17,9 @@ public class OrderDao extends BaseDao{
         this.connection = BaseDao.getConnection();
     }
 
-    public void saveNewOrder(int productId, int quantity, int totalPrice, Date date, int customerId, OrderStatus status) throws SQLException {
-        String sqlQuery = "insert into orders (product_id, quantity, total_price, date, customer_id, status)" +
-                "values(?, ?, ?, ?, ?, ?)";
+    public void saveNewOrder(int productId, int quantity, int totalPrice, Date date, int customerId, OrderStatus status, int counter) throws SQLException {
+        String sqlQuery = "insert into orders (product_id, quantity, total_price, date, customer_id, status, counter)" +
+                "values(?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement statement = connection.prepareStatement(sqlQuery);
         statement.setInt(1, productId);
         statement.setInt(2, quantity);
@@ -27,6 +27,7 @@ public class OrderDao extends BaseDao{
         statement.setDate(4, date);
         statement.setInt(5, customerId);
         statement.setString(6, status.name());
+        statement.setInt(7, counter);
 
         statement.executeUpdate();
     }
