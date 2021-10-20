@@ -48,8 +48,9 @@ public class OrderDao extends BaseDao{
     }
 
     public int findQuantityOrderById(int orderId) throws Exception {
-        PreparedStatement statement = connection.prepareStatement(String.format("select quantity from orders" +
-                "where id = %d", orderId));
+        PreparedStatement statement = connection.prepareStatement("select quantity from orders" +
+                "where id = ?");
+        statement.setInt(1, orderId);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()){
             int quantity = resultSet.getInt("quantity");
@@ -62,8 +63,9 @@ public class OrderDao extends BaseDao{
     }
 
     public int findTotalOrdersPrice(int customerId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(String.format("select sum(total_price)" +
-                "as sum_price from  where customer_id = %d", customerId));
+        PreparedStatement statement = connection.prepareStatement("select sum(total_price)" +
+                "as sum_price from  where customer_id = ?");
+        statement.setInt(1, customerId);
         ResultSet resultSet = statement.executeQuery();
         int sumPrice = 0;
         while (resultSet.next()){
@@ -73,10 +75,11 @@ public class OrderDao extends BaseDao{
     }
 
     public int findMaxOrderCounterByCustomerId(int customerId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("select max(counter)" +
+        Statement statement = connection.createStatement();
+        String sqlQuery = "select max(counter)" +
                 "as max_counter from orders where customer_id = '" + customerId + "' " +
-                "and status = '" + OrderStatus.NOT_CONFIRMED + "'");
-        ResultSet resultSet = statement.executeQuery();
+                "and status = '" + OrderStatus.NOT_CONFIRMED + "'";
+        ResultSet resultSet = statement.executeQuery(sqlQuery);
         while (resultSet.next()){
             int maxCounter = resultSet.getInt("max_counter");
             return maxCounter;
@@ -85,8 +88,9 @@ public class OrderDao extends BaseDao{
     }
 
     public OrderStatus findOrderStatusById(int orderId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(String.format("select status from orders" +
-                "where id = %d", orderId));
+        PreparedStatement statement = connection.prepareStatement("select status from orders" +
+                "where id = ?");
+        statement.setInt(1, orderId);
         ResultSet resultSet = statement.executeQuery();
         while (resultSet.next()){
             return OrderStatus.valueOf(resultSet.getString("status"));
@@ -95,15 +99,17 @@ public class OrderDao extends BaseDao{
     }
 
     public void updateOrderCounter(int orderId, int newCounter) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("update orders set counter = '"+newCounter+"'" +
-                "where id = '"+orderId+"'");
-        statement.executeUpdate();
+        Statement statement = connection.createStatement();
+        String sqlQuery = "update orders set counter = '"+newCounter+"'" +
+                "where id = '"+orderId+"'";
+        statement.executeUpdate(sqlQuery);
     }
 
     public List<Order> getAllOrders(int customerId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(String.format("select * from orders where" +
-                "customer_id = %d", customerId));
-        ResultSet resultSet = statement.executeQuery();
+        Statement statement = connection.createStatement();
+        String sqlQuery =String.format("select * from orders where" +
+                "customer_id = %d", customerId);
+        ResultSet resultSet = statement.executeQuery(sqlQuery);
         List<Order> orders = new ArrayList<>();
         while (resultSet.next()){
             Order order = new Order();
