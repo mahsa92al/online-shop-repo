@@ -24,15 +24,15 @@ public class OrderService {
 
     public void addNewOrderToBag(int itemId, int quantity, Date date, int customerId) throws Exception {
         int maxCounter = orderDao.findMaxOrderCounterByCustomerId(customerId);
-        if (maxCounter <= 5) {
-
+        if (maxCounter < 5) {
+            int counter = maxCounter + 1;
             int stock = productDao.findStockByProductId(itemId);
             if (stock == 0) {
                 throw new Exception("The product stock is zero.");
             } else {
                 int price = productDao.findItemPriceById(itemId);
                 int totalPrice = price * quantity;
-                orderDao.saveNewOrder(itemId, quantity, totalPrice, date, customerId, OrderStatus.NOT_CONFIRMED);
+                orderDao.saveNewOrder(itemId, quantity, totalPrice, date, customerId, OrderStatus.NOT_CONFIRMED, counter);
             }
         } else {
             throw new Exception("Your shopping bag is full!");
