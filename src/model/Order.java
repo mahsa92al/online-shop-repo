@@ -90,6 +90,8 @@ public class Order {
                 ", totalPrice=" + totalPrice +
                 ", date=" + date +
                 ", customerId=" + customerId +
+                ", status=" + status +
+                ", counter=" + counter +
                 '}';
     }
 }
