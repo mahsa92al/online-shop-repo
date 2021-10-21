@@ -7,7 +7,6 @@ import repository.ProductDao;
 
 import java.sql.Date;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +21,8 @@ public class OrderService {
         productDao = new ProductDao();
     }
 
-    public void addNewOrderToBag(int itemId, int quantity, Date date, int customerId) throws Exception {
+    public boolean addNewOrderToBag(int itemId, int quantity, Date date, int customerId) throws Exception {
+        boolean isFull = false;
         int maxCounter = orderDao.findMaxOrderCounterByCustomerId(customerId);
         if (maxCounter < 5) {
             int counter = maxCounter + 1;
@@ -37,8 +37,9 @@ public class OrderService {
                 orderDao.saveNewOrder(itemId, quantity, totalPrice, date, customerId, OrderStatus.NOT_CONFIRMED, counter);
             }
         } else {
-            throw new Exception("Your shopping bag is full!");
+            isFull = true;
         }
+        return isFull;
     }
 
     public int sumOfOrderPrices(int customerId) throws SQLException {
