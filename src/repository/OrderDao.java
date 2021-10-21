@@ -32,8 +32,8 @@ public class OrderDao extends BaseDao{
         statement.executeUpdate();
     }
 
-    public void updateOrderStatus(int orderId, OrderStatus status) throws SQLException {
-        String sqlQuery = "update orders set stock = '" + status.name() + "'" +
+    public void updateOrderStatus(int orderId, String status) throws SQLException {
+        String sqlQuery = "update orders set status = '" + status + "'" +
                 "where id = '" + orderId + "'";
         Statement statement = connection.createStatement();
         statement.executeUpdate(sqlQuery);
@@ -43,19 +43,6 @@ public class OrderDao extends BaseDao{
         Statement statement = connection.createStatement();
         int row = statement.executeUpdate("delete from orders where id = '"+orderId+"'");
         return row;
-    }
-
-    public int findQuantityOrderById(int orderId) throws Exception {
-        Statement statement = connection.createStatement();
-        ResultSet resultSet = statement.executeQuery("select quantity from orders where id = '"+orderId+"'");
-        while (resultSet.next()){
-            int quantity = resultSet.getInt("quantity");
-            if(quantity == 0){
-                throw new Exception("Order quantity is not set!");
-            }
-            return quantity;
-        }
-        return 0;
     }
 
     public int findTotalOrdersPrice(int customerId) throws SQLException {
@@ -111,7 +98,7 @@ public class OrderDao extends BaseDao{
             order.setTotalPrice(resultSet.getInt("total_price"));
             order.setDate(resultSet.getDate("date"));
             order.setCustomerId(resultSet.getInt("customer_id"));
-            order.setStatus(OrderStatus.valueOf(resultSet.getString("customer_id")));
+            order.setStatus(OrderStatus.valueOf(resultSet.getString("status")));
             order.setCounter(resultSet.getInt("counter"));
             orders.add(order);
         }
