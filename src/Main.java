@@ -38,15 +38,16 @@ public class Main {
             switch (choiceNumber) {
                 case 1:
                     int customerId = createAccountByCustomer();
-                    do{
-                        showProducts(productService.getAllProducts());
+                    do {
+                        List<Product> products = productService.getAllProducts();
+                        showProducts(products);
                         System.out.println("----------------------------------------------");
-                        System.out.println("1. Add to shopping bag\n2. Exit");
+                        System.out.println("1. Add to shopping bag\n2. Confirm\n3. Remove\n4. Exit");
                         do {
                             choice = scanner.next();
                         } while (!choice.matches("[1-9]+"));
                         choiceNumber = Integer.parseInt(choice);
-                        switch (choiceNumber){
+                        switch (choiceNumber) {
                             case 1:
                                 try {
                                     addToShoppingBag(customerId);
@@ -55,11 +56,17 @@ public class Main {
                                 }
                                 break;
                             case 2:
+                                confirmByCustomer(customerId);
+                                break;
+                            case 3:
+                                removeAnOrderByCustomer(customerId);
+                                break;
+                            case 4:
                                 break;
                             default:
                                 System.out.println("Invalid value!");
                         }
-                    }while (choiceNumber != 2);
+                    } while (choiceNumber != 4);
                     break;
                 case 2:
                     System.out.println("***Good Bye***");
@@ -70,11 +77,36 @@ public class Main {
         } while (choiceNumber != 2);
     }
 
+    private static void confirmByCustomer(int customerId) throws SQLException {
+        String choice;
+        int choiceNumber;
+        List<Order> ordersList = orderService.getOrderList(customerId);
+        for (Order item : ordersList) {
+            System.out.println(item);
+        }
+        System.out.println(orderService.sumOfOrderPrices(customerId));
+        System.out.println("Do you Confirm?\n1. Yes\n2. No");
+        do {
+            choice = scanner.next();
+        } while (!choice.matches("[1-9]+"));
+        choiceNumber = Integer.parseInt(choice);
+        switch (choiceNumber) {
+            case 1:
+                orderService.confirmOrdersByCustomer(ordersList);
+                System.out.println("Your order are confirmed.");
+                break;
+            case 2:
+                break;
+            default:
+                System.out.println("Invalid value!");
+        }
+    }
+
     private static void removeAnOrderByCustomer(int customerId) throws SQLException {
         List<Order> orderList = orderService.getOrderList(customerId);
         System.out.println(orderList);
         Map<Integer, Integer> counterMap = new HashMap<>();
-        for (Order item: orderList) {
+        for (Order item : orderList) {
             counterMap.put(item.getId(), item.getCounter());
         }
         System.out.println("which order do you want to remove from bags?\nEnter order Id:");
@@ -87,8 +119,8 @@ public class Main {
         try {
             remove = orderService.removeOrderFromBag(orderIdNumber);
             int deletedOrderCounter = counterMap.get(orderIdNumber);
-            for (Map.Entry<Integer, Integer> entry : counterMap.entrySet()){
-                if(entry.getValue() > deletedOrderCounter){
+            for (Map.Entry<Integer, Integer> entry : counterMap.entrySet()) {
+                if (entry.getValue() > deletedOrderCounter) {
                     int newCounter = entry.getValue() - 1;
                     orderService.decreaseOrderCounter(entry.getKey(), newCounter);
                 }
@@ -165,48 +197,33 @@ public class Main {
             throw new Exception("You did not enter valid date.");
         }
         try {
-            orderService.addNewOrderToBag(Integer.parseInt(productId), Integer.parseInt(quantity),
+            boolean isFull = orderService.addNewOrderToBag(Integer.parseInt(productId), Integer.parseInt(quantity),
                     java.sql.Date.valueOf(date), customerId);
+            if(isFull == true){
+                System.out.println("Your shopping bag is full!");
+                int choiceNumber;
+                do {
+                    System.out.println("1. remove an item\n2. Exit");
+                    String choice;
+                    do {
+                        choice = scanner.next();
+                    } while (!choice.matches("[1-9]+"));
+                    choiceNumber = Integer.parseInt(choice);
+                    switch (choiceNumber) {
+                        case 1:
+                            removeAnOrderByCustomer(customerId);
+                            break;
+                        case 2:
+                            break;
+                        default:
+                            System.out.println("Invalid value!");
+                    }
+                } while (choiceNumber != 2);
+            }
+
+            System.out.println("The order added to shopping bag successfully");
         } catch (Exception e) {
-            int choiceNumber;
-            do{
-                System.out.println("1. remove an item\n 2. Exit");
-                String choice;
-                do {
-                    choice = scanner.next();
-                } while (!choice.matches("[1-9]+"));
-                choiceNumber = Integer.parseInt(choice);
-                switch (choiceNumber) {
-                    case 1:
-                        removeAnOrderByCustomer(customerId);
-                        break;
-                    case 2:
-                        break;
-                    default:
-                        System.out.println("Invalid value!");
-                }
-            }while(choiceNumber != 2);
-            do{
-                System.out.println("1. Confirm\n2. Remove");
-                String choice;
-                do {
-                    choice = scanner.next();
-                } while (!choice.matches("[1-9]+"));
-                choiceNumber = Integer.parseInt(choice);
-                switch (choiceNumber){
-                    case 1:
-                        List<Order> ordersList = orderService.getOrderList(customerId);
-                        System.out.println(ordersList);
-                        System.out.println(orderService.sumOfOrderPrices(customerId));
-                        orderService.confirmOrdersByCustomer(ordersList);
-                        break;
-                    case 2:
-                        removeAnOrderByCustomer(customerId);
-                        break;
-                    default:
-                        System.out.println("Invalid value!");
-                }
-            }while (choiceNumber != 1 || choiceNumber != 2);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -290,7 +307,7 @@ public class Main {
     private static String getPostalCode() throws Exception {
         System.out.println("Postal code:");
         String postalCode = scanner.next();
-        if (!postalCode.matches("[1-9]+")) {
+        if (!postalCode.matches("[0-9]+")) {
             throw new Exception("You did not enter numbers! please enter only numbers.");
         }
         return postalCode;
